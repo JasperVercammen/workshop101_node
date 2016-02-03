@@ -11,7 +11,7 @@ exports.getScore = function(req, res){
 	}
 	Score.model
 		.find()
-		.select('-_id score createdAt')
+		.select('-_id score updatedAt')
 		.where('user', req.query.user)
 		//.populate('user', '-_id name')
 		.sort('-score')
@@ -41,30 +41,35 @@ exports.postScore = function(req, res){
 
 		Score.model
 			.find()
-			.select('-_id score')
-			.where('user', req.query.user)
-			.sort('score')
+			.where('user', req.body.user)
+			.sort('-score')
 			.limit(5)
 			.exec(function(err, scores){
 			if(err)
 				return res.status(400).send({error: true, message: err});
 			else if(scores.length < 5) {
+				// new score model (New until there are 5 in the db)
+				// We set the score later on
 				score = new Score.model({
-					score: req.body.score,
-					user: req.body.user,
+					score: 0,
+					user: req.body.user
 				});
 			} else {
-				score = scores[0];
-				score.score = req.body.score;
+				// Use the last (lowest) score in the DB
+				score = scores[4];
 			}
-			console.log(score);
-			score.save(function(err) {
-				if (err) {
-					return res.status(400).send({error: true, message: err});
-				} else {
-					return res.status(200).send({error: false, message: 'New score (' + score.score + ') inserted'});
-				}
-			});
+			if(score.score < req.body.score){
+				// SET score value
+				score.score = req.body.score;
+				// Save the score
+				score.save(function(err) {
+					if (err) return res.status(400).send({error: true, message: err});
+					else return res.status(200).send({error: false, message: 'New score (' + score.score + ') inserted'});
+				});
+			}
+			else {
+				return res.status(200).send({error: false, message: 'No score inserted, other scores where higher.'});
+			}
 		});
 
 };
@@ -72,6 +77,27 @@ exports.postScore = function(req, res){
 
 exports.getScoresTable = function(req, res){
 	// Check for required user input
-	
-	res.status(200).send({result: 'getScoresTable'});
+	Score.model.find().select('-_id score updatedAt user').populate('user', '-_id name').sort('-user -score').exec(function(err, scores){
+		if(err) return res.status(400).send({error: true, message: err});
+		var old_user = '';
+		var result = [];
+		var index = -1;
+		scores.forEach(function(score){
+			var username = score.user.name.first + ' ' + score.user.name.last;
+			if(username === old_user){
+				result[index].scores.push({score: score.score, date: score.updatedAt}); 
+			} else {
+				index += 1;
+				old_user = username;
+				result[index] = {
+					name: username,
+					highscore: score.score,
+					date: score.updatedAt,
+					scores: [{score: score.score, date: score.updatedAt}]
+				};
+			}
+		});
+
+		res.status(200).send({error: false, result: result});
+	});
 };

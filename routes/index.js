@@ -43,6 +43,6 @@ exports = module.exports = function(app) {
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 	app.get('/api/score', routes.api.scores.getScore);
 	app.post('/api/score', routes.api.scores.postScore);
-	app.get('/api/scoreTable', routes.api.scores.getScoresTable);
+	app.get('/api/scores-table', routes.api.scores.getScoresTable);
 	app.post('/api/facebook-login', routes.api.user.fbLogin);
 };
