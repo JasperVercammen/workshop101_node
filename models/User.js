@@ -21,7 +21,12 @@ User.schema.virtual('canAccessKeystone').get(function() {
 	return this.isAdmin;
 });
 
-
+// Linked devices
+User.relationship({
+	path: 'Scores',
+	ref: 'Score',
+	refPath: 'user'
+});
 /**
  * Registration
  */

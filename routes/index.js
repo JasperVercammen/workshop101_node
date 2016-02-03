@@ -28,7 +28,8 @@ keystone.pre('render', middleware.flashMessages);
 
 // Import Route Controllers
 var routes = {
-	views: importRoutes('./views')
+	views: importRoutes('./views'),
+	api: importRoutes('./api')
 };
 
 // Setup Route Bindings
@@ -40,5 +41,8 @@ exports = module.exports = function(app) {
 	
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
-	
+	app.get('/api/score', routes.api.scores.getScore);
+	app.post('/api/score', routes.api.scores.postScore);
+	app.get('/api/scoreTable', routes.api.scores.getScoresTable);
+	app.post('/api/facebook-login', routes.api.user.fbLogin);
 };
