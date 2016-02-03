@@ -9,7 +9,8 @@
 
 exports.create = {
 	User: [
-		{ 'name.first': 'Admin', 'name.last': 'User', email: 'maarten.anckaert@icapps.com', password: 'admin', isAdmin: true }
+		{ 'name.first': 'Admin', 'name.last': 'User', email: 'maarten.anckaert@icapps.com', password: 'admin', isAdmin: true },
+		{ 'name.first': 'Jasper', 'name.last': 'Vercammen', email: 'jasper.vercammen@icapps.com', password: 'icapps', isAdmin: true }
 	]
 };
 
