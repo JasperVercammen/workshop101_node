@@ -2,8 +2,6 @@ var keystone = require('keystone');
 //var User = keystone.list('User');
 var Score = keystone.list('Score');
 
-
-
 exports.getScore = function(req, res){
 	// Check for required user input
 	if(!req.query.user){

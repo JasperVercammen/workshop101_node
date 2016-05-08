@@ -41,8 +41,10 @@ exports = module.exports = function(app) {
 	
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
-	app.get('/api/score', routes.api.scores.getScore);
-	app.post('/api/score', routes.api.scores.postScore);
+	app.get('/api/score', middleware.initPassport, routes.api.scores.getScore);
+	app.post('/api/score', middleware.initPassport, routes.api.scores.postScore);
 	app.get('/api/scores-table', routes.api.scores.getScoresTable);
-	app.post('/api/facebook-login', routes.api.user.fbLogin);
+	app.post('/api/facebook-login', middleware.initPassport, routes.api.user.fbLogin);
+	app.post('/api/facebook-login-return', middleware.initPassport, routes.api.user.fbLoginReturn);
+	app.post('/api/facebook-connected', middleware.initPassport, routes.api.user.fbConnected);
 };

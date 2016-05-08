@@ -10,6 +10,7 @@
 
 var _ = require('underscore');
 
+var passport = require('passport');
 
 /**
 	Initialises the standard view locals
@@ -67,4 +68,10 @@ exports.requireUser = function(req, res, next) {
 		next();
 	}
 	
+};
+
+exports.initPassport = function(req, res, next){
+	passport.initialize();
+	passport.session();
+	next();
 };

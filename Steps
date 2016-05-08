@@ -1,0 +1,37 @@
+--> Download node (stable) https://nodejs.org/en/
+
+
+--> Install homebrew: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+--> Install MongoDB
+  --> brew update
+  --> brew install mongodb
+  --> (sudo) mkdir -p /data/db
+
+
+
+--> 
+
+
+
+
+
+
+
+
+=======
+SETUP
+=======
+
+New Score model
+Add relationship with users
+make API folder in routes
+add scores and user file in /api
+add api in routes object
+add endpoints and point them to routes function
+write endpoint functions
+
+For visualization: Add scores to keystone.js menu
+
+Facbook login:
+npm install --save passport passport-facebook
